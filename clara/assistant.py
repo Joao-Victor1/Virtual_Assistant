@@ -1,10 +1,12 @@
+import spacy
 class ClaraAssistant:
 
     def __init__(self):
         self.woken_up = False
+        self.nlp = spacy.load("pt_core_news_sm")
     
     def check_wake_word(self, command):
-        if "teste" in command.lower():
+        if "clara" in command:
             self.woken_up = True
 
     def start(self):
@@ -14,4 +16,8 @@ class ClaraAssistant:
         return "Até logo!"
     
     def process_command(self, command):
-        pass
+        if self.woken_up:
+            doc = self.nlp(command)
+            return doc.text
+        else:
+            return ""
