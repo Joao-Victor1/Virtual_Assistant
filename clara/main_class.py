@@ -1,14 +1,14 @@
-# main_class.py
-
 from clara.assistant import ClaraAssistant
 from clara.voice_recognizer import VoiceRecognizer
 from clara.audio_player import AudioPlayer
+from clara.nlp_processor import NLPProcessor
 
 class Main:
     def __init__(self):
         self.assistant = ClaraAssistant()
         self.voice_recognizer = VoiceRecognizer()
         self.audio_player = AudioPlayer("audios")
+        self.nlp_processor = NLPProcessor()
     
     def initialize_assistant(self):
         while True:
@@ -17,7 +17,7 @@ class Main:
             self.assistant.check_wake_word(user_input)
 
             if self.assistant.woken_up:
-                if "teste" in user_input:
+                if "clara" in user_input:
                     greeting = self.assistant.start()
                     if greeting:
                         print("C.L.A.R.A", greeting)
@@ -29,3 +29,6 @@ class Main:
                         print(farewell)
                         self.audio_player.say_response(farewell)
                         break
+
+                processed_command = self.nlp_processor.process_text(user_input)
+                self.audio_player.say_response(processed_command)
